@@ -17,21 +17,47 @@ function activate(context) {
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with  registerCommand
 	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('extension.helloWorld', function () {
-		// The code you place here will be executed every time your command is executed
-
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World!');
-	});
-
-	context.subscriptions.push(disposable);
+	context.subscriptions.push(
+		vscode.commands.registerCommand('extension.includeFile', includeFile),
+		vscode.commands.registerCommand('extension.includeGuard', includeGuard)
+	);
 }
 exports.activate = activate;
 
 // this method is called when your extension is deactivated
 function deactivate() {}
 
-module.exports = {
-	activate,
-	deactivate
+module.exports = { activate, deactivate };
+
+function includeFile() {
+	let editor = vscode.window.activeTextEditor;
+	if (!editor) return;
+
+	let document = editor.document;
+	let selection = editor.selection;
+	if (selection.isEmpty) {
+		let range = document.lineAt(selection.start.line).range;
+        selection = new vscode.Selection(range.start, range.end);
+	}
+
+	// Get the word within the selection
+	let path = document.getText(selection).replace(/\/.*src\//, '');
+	editor.edit(editBuilder => {
+		editBuilder.replace(selection, `#include "${path}"`);
+	});
+}
+
+function includeGuard() {
+	let editor = vscode.window.activeTextEditor;
+	if (!editor) return;
+
+	let document = editor.document;
+	let path = document.fileName;
+	const definition = path.replace(/\/.*src\//, '').replace(/[\/\.]/g, '_').toUpperCase() + '_';
+	editor.edit(editBuilder => {
+		const start = document.lineAt(0).range.start;
+		editBuilder.insert(start, `#ifndef ${definition}\n#define ${definition}\n\n`);
+		const end = document.lineAt(document.lineCount-1).range.end;
+		editBuilder.insert(end, `\n#endif  // ${definition}\n`);
+	});
 }

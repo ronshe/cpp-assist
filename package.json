@@ -1,23 +1,38 @@
 {
+	"publisher": "ronnysherer",
+	"author": {
+		"name": "Ronny Sherer"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ronnystarkware/cpp-helper"
+	},
 	"name": "cpp-helper",
 	"displayName": "C++ helper",
 	"description": "C++ shortcuts",
 	"version": "0.0.1",
 	"engines": {
-		"vscode": "^1.37.0"
+		"vscode": "^1.36.0"
 	},
 	"categories": [
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.helloWorld"
+		"onCommand:extension.includeFile",
+		"onCommand:extension.includeGuard"
 	],
 	"main": "./extension.js",
 	"contributes": {
-		"commands": [{
-            "command": "extension.helloWorld",
-			"title": "Hello World"
-		}]
+		"commands": [
+			{
+				"command": "extension.includeFile",
+				"title": "include file"
+			},
+			{
+				"command": "extension.includeGuard",
+				"title": "include guard"
+			}
+		]
 	},
 	"scripts": {
 		"test": "node ./test/runTest.js"
@@ -26,7 +41,7 @@
 		"@types/glob": "^7.1.1",
 		"@types/mocha": "^5.2.6",
 		"@types/node": "^10.12.21",
-		"@types/vscode": "^1.37.0",
+		"@types/vscode": "^1.36.0",
 		"eslint": "^5.13.0",
 		"glob": "^7.1.4",
 		"mocha": "^6.1.4",
