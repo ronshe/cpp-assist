@@ -18,8 +18,8 @@ function activate(context) {
 	// Now provide the implementation of the command with  registerCommand
 	// The commandId parameter must match the command field in package.json
 	context.subscriptions.push(
-		vscode.commands.registerCommand('extension.includeFile', includeFile),
-		vscode.commands.registerCommand('extension.includeGuard', includeGuard)
+		vscode.commands.registerCommand('cpphelp.includeFile', includeFile),
+		vscode.commands.registerCommand('cpphelp.includeGuard', includeGuard)
 	);
 }
 exports.activate = activate;

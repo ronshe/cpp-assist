@@ -25,17 +25,34 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "extension.includeFile",
+				"command": "cpphelp.includeFile",
 				"title": "include file"
 			},
 			{
-				"command": "extension.includeGuard",
+				"command": "cpphelp.includeGuard",
 				"title": "include guard"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "cpphelp.includeFile",
+				"title": "include file",
+				"key": "ctrl+alt+i",
+				"mac": "cmd+alt+i",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "cpphelp.includeGuard",
+				"title": "include guard",
+				"key": "ctrl+alt+g",
+				"mac": "cmd+alt+g",
+				"when": "editorTextFocus"
 			}
 		]
 	},
 	"scripts": {
-		"test": "node ./test/runTest.js"
+		"test": "node ./test/runTest.js",
+		"make": "vsce package -o /tmp/cpp-helper.vsix && code --install-extension /tmp/cpp-helper.vsix && rm /tmp/cpp-helper.vsix"
 	},
 	"devDependencies": {
 		"@types/glob": "^7.1.1",
