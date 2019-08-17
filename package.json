@@ -25,34 +25,74 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "cpphelp.includeFile",
+				"command": "extension.includeFile",
 				"title": "include file"
 			},
 			{
-				"command": "cpphelp.includeGuard",
+				"command": "extension.includeGuard",
 				"title": "include guard"
 			}
 		],
 		"keybindings": [
 			{
-				"command": "cpphelp.includeFile",
+				"command": "extension.includeFile",
 				"title": "include file",
 				"key": "ctrl+alt+i",
 				"mac": "cmd+alt+i",
 				"when": "editorTextFocus"
 			},
 			{
-				"command": "cpphelp.includeGuard",
+				"command": "extension.includeGuard",
 				"title": "include guard",
 				"key": "ctrl+alt+g",
 				"mac": "cmd+alt+g",
 				"when": "editorTextFocus"
 			}
+		],
+		"configuration": [
+			{
+				"title": "C++ Helper",
+				"properties": {
+					"cpp_helper.removePathUntil": {
+						"type": "string",
+						"default": "/src/",
+						"description": "Ignore this path prefix from `include` path and include guard."
+					},
+					"cpp_helper.includeGuard.prefix": {
+						"type": "string",
+						"default": "",
+						"description": "Prefix for include guard."
+					},
+					"cpp_helper.includeGuard.postfix": {
+						"type": "string",
+						"default": "_",
+						"description": "Postfix for include guard."
+					},
+					"cpp_helper.includeGuard.commentStyle": {
+						"type": "string",
+						"enum": [
+							"C++",
+							"C",
+							"None"
+						],
+						"default": "C++",
+						"description": "Style of comment in include guard end."
+					},
+					"cpp_helper.includeGuard.spacesBeforeComment": {
+						"type": "number",
+						"minimum": 0,
+						"maximum": 40,
+						"default": 2,
+						"description": "How many spaces between the '#endif' and the comment."
+					}
+				}
+			}
 		]
 	},
 	"scripts": {
 		"test": "node ./test/runTest.js",
-		"make": "vsce package -o /tmp/cpp-helper.vsix && code --install-extension /tmp/cpp-helper.vsix && rm /tmp/cpp-helper.vsix"
+		"create": "node node_modules/vsce/out/vsce package -o ./cpp-helper.vsix",
+		"make": "node node_modules/vsce/out/vsce package -o ./cpp-helper.vsix && code --install-extension ./cpp-helper.vsix && node node_modules/del-cli/cli.js ./cpp-helper.vsix"
 	},
 	"devDependencies": {
 		"@types/glob": "^7.1.1",
@@ -64,5 +104,9 @@
 		"mocha": "^6.1.4",
 		"typescript": "^3.3.1",
 		"vscode-test": "^1.0.2"
+	},
+	"dependencies": {
+		"del-cli": "^2.0.0",
+		"vsce": "^1.66.0"
 	}
 }

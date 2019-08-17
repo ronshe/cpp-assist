@@ -18,8 +18,8 @@ function activate(context) {
 	// Now provide the implementation of the command with  registerCommand
 	// The commandId parameter must match the command field in package.json
 	context.subscriptions.push(
-		vscode.commands.registerCommand('cpphelp.includeFile', includeFile),
-		vscode.commands.registerCommand('cpphelp.includeGuard', includeGuard)
+		vscode.commands.registerCommand('extension.includeFile', includeFile),
+		vscode.commands.registerCommand('extension.includeGuard', includeGuard)
 	);
 }
 exports.activate = activate;
@@ -39,9 +39,8 @@ function includeFile() {
 		let range = document.lineAt(selection.start.line).range;
         selection = new vscode.Selection(range.start, range.end);
 	}
-
-	// Get the word within the selection
-	let path = document.getText(selection).replace(/\/.*src\//, '');
+	let deleteUntil = 'sources/';
+	let path = removePrefix(document.getText(selection), deleteUntil);
 	editor.edit(editBuilder => {
 		editBuilder.replace(selection, `#include "${path}"`);
 	});
@@ -51,13 +50,29 @@ function includeGuard() {
 	let editor = vscode.window.activeTextEditor;
 	if (!editor) return;
 
-	let document = editor.document;
-	let path = document.fileName;
-	const definition = path.replace(/\/.*src\//, '').replace(/[\/\.]/g, '_').toUpperCase() + '_';
+	const deleteUntil = vscode.workspace.getConfiguration().get('cpp_helper.removePathUntil');
+	const prefix = vscode.workspace.getConfiguration().get('cpp_helper.includeGuard.prefix');
+	const postfix = vscode.workspace.getConfiguration().get('cpp_helper.includeGuard.postfix');
+	const commentStyle = vscode.workspace.getConfiguration().get('cpp_helper.includeGuard.commentStyle');
+	const spaces = ' '.repeat(vscode.workspace.getConfiguration().get('cpp_helper.includeGuard.spacesBeforeComment'));
+
+	const document = editor.document;
+	const path = document.fileName;
+	const definition = prefix + removePrefix(path, deleteUntil).replace(/[\\\/\.-]/g, '_').toUpperCase() + postfix;
 	editor.edit(editBuilder => {
 		const start = document.lineAt(0).range.start;
 		editBuilder.insert(start, `#ifndef ${definition}\n#define ${definition}\n\n`);
 		const end = document.lineAt(document.lineCount-1).range.end;
-		editBuilder.insert(end, `\n#endif  // ${definition}\n`);
+		const comment = (commentStyle == 'None') ? '' :
+					 ((commentStyle == 'C++') ? `${spaces}// ${definition}` : `${spaces}/* ${definition} */`);
+		editBuilder.insert(end, `\n#endif${comment}\n`);
 	});
+}
+
+function removePrefix(path, prefix) {
+	if (prefix.length == 0 || !prefix[prefix.length-1].match(/[\/\\]/))
+		prefix += '/';
+
+	const deleteBefore = '\.*'+prefix.replace(/\\/g, '/');
+	return path.replace(/.*:/g, '').replace(/\\/g, '/').replace(new RegExp(deleteBefore, 'g'), '');
 }
