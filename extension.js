@@ -39,7 +39,7 @@ function includeFile() {
 		let range = document.lineAt(selection.start.line).range;
         selection = new vscode.Selection(range.start, range.end);
 	}
-	let deleteUntil = 'sources/';
+	const deleteUntil = vscode.workspace.getConfiguration().get('cpp_helper.removePathUntil');
 	let path = removePrefix(document.getText(selection), deleteUntil);
 	editor.edit(editBuilder => {
 		editBuilder.replace(selection, `#include "${path}"`);
@@ -52,13 +52,13 @@ function includeGuard() {
 
 	const deleteUntil = vscode.workspace.getConfiguration().get('cpp_helper.removePathUntil');
 	const prefix = vscode.workspace.getConfiguration().get('cpp_helper.includeGuard.prefix');
-	const postfix = vscode.workspace.getConfiguration().get('cpp_helper.includeGuard.postfix');
+	const suffix = vscode.workspace.getConfiguration().get('cpp_helper.includeGuard.suffix');
 	const commentStyle = vscode.workspace.getConfiguration().get('cpp_helper.includeGuard.commentStyle');
 	const spaces = ' '.repeat(vscode.workspace.getConfiguration().get('cpp_helper.includeGuard.spacesBeforeComment'));
 
 	const document = editor.document;
 	const path = document.fileName;
-	const definition = prefix + removePrefix(path, deleteUntil).replace(/[\\\/\.-]/g, '_').toUpperCase() + postfix;
+	const definition = prefix + removePrefix(path, deleteUntil).replace(/[\\\/\.-]/g, '_').toUpperCase() + suffix;
 	editor.edit(editBuilder => {
 		const start = document.lineAt(0).range.start;
 		editBuilder.insert(start, `#ifndef ${definition}\n#define ${definition}\n\n`);

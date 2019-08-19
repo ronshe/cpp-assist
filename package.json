@@ -8,9 +8,10 @@
 		"url": "https://github.com/ronnystarkware/cpp-helper"
 	},
 	"name": "cpp-helper",
+    "icon": "images/icon.png",
 	"displayName": "C++ helper",
 	"description": "C++ shortcuts",
-	"version": "0.0.1",
+	"version": "0.1.2",
 	"engines": {
 		"vscode": "^1.36.0"
 	},
@@ -63,10 +64,10 @@
 						"default": "",
 						"description": "Prefix for include guard."
 					},
-					"cpp_helper.includeGuard.postfix": {
+					"cpp_helper.includeGuard.suffix": {
 						"type": "string",
 						"default": "_",
-						"description": "Postfix for include guard."
+						"description": "Suffix for include guard."
 					},
 					"cpp_helper.includeGuard.commentStyle": {
 						"type": "string",
