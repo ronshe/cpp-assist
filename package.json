@@ -3,15 +3,20 @@
 	"author": {
 		"name": "Ronny Sherer"
 	},
+	"homepage": "https://github.com/ronnystarkware/cpp-helper/blob/master/README.md",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/ronnystarkware/cpp-helper"
 	},
+    "bugs": {
+        "url": "https://github.com/ronnystarkware/cpp-helper/issues"
+    },
 	"name": "cpp-helper",
     "icon": "images/icon.png",
 	"displayName": "C++ helper",
 	"description": "C++ shortcuts",
-	"version": "0.1.2",
+	"license": "See license in LICENSE.txt",
+	"version": "0.1.3",
 	"engines": {
 		"vscode": "^1.36.0"
 	},
