@@ -47,7 +47,17 @@ function getRelativePath(document, path) {
     return require('path').relative(currPath, path);
 }
 
+let extensionPath = '';
+function setExtensionPath(path) {
+    extensionPath = path;
+}
+function getExtensionPath() {
+    return extensionPath;
+}
+
 module.exports = {
+    setExtensionPath,
+    getExtensionPath,
     removePrefix,
     getSelectedText,
     selectLine,

@@ -25,7 +25,8 @@
 	],
 	"activationEvents": [
 		"onCommand:extension.includeFile",
-		"onCommand:extension.includeGuard"
+		"onCommand:extension.includeGuard",
+		"onCommand:extension.createClass"
 	],
 	"main": "./extension.js",
 	"contributes": {
@@ -37,8 +38,20 @@
 			{
 				"command": "extension.includeGuard",
 				"title": "c++ helper: include guard"
+			},
+			{
+				"command": "extension.createClass",
+				"title": "c++ helper: create class"
 			}
 		],
+		"menus": {
+			"explorer/context": [
+				{
+					"when": "explorerResourceIsFolder",
+					"command": "extension.createClass"
+				}
+			]
+		},
 		"keybindings": [
 			{
 				"command": "extension.includeFile",
@@ -95,6 +108,26 @@
 						"maximum": 40,
 						"default": 2,
 						"description": "How many spaces between the '#endif' and the comment."
+					},
+					"cpp_helper.createClass.cppExtension": {
+						"type": "string",
+						"default": "cpp",
+						"description": "Extension of C++ implementation file."
+					},
+					"cpp_helper.createClass.hppExtension": {
+						"type": "string",
+						"default": "h",
+						"description": "Extension of C++ header file."
+					},
+					"cpp_helper.createClass.cppTemplate": {
+						"type": "string",
+						"default": "",
+						"description": "Template of C++ header file."
+					},
+					"cpp_helper.createClass.hppTemplate": {
+						"type": "string",
+						"default": "",
+						"description": "Template of C++ header file."
 					}
 				}
 			}
