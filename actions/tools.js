@@ -2,7 +2,7 @@ const vscode = require('vscode');
 
 function removePrefix(path) {
 	let newPath = path;
-	let prefix = vscode.workspace.getConfiguration().get('cpp_helper.removePathUntil');
+	let prefix = vscode.workspace.getConfiguration().get('cpp_assist.removePathUntil');
 	if (prefix.length > 0) {
 		if (!prefix[prefix.length-1].match(/[\/\\]/))
 			prefix += '/';

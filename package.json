@@ -3,18 +3,18 @@
 	"author": {
 		"name": "Ronny Sherer"
 	},
-	"homepage": "https://github.com/ronshe/cpp-helper/blob/master/README.md",
+	"homepage": "https://github.com/ronshe/cpp-assist/blob/master/README.md",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/ronshe/cpp-helper"
+		"url": "https://github.com/ronshe/cpp-assist"
 	},
 	"bugs": {
-		"url": "https://github.com/ronshe/cpp-helper/issues"
+		"url": "https://github.com/ronshe/cpp-assist/issues"
 	},
-	"name": "cpp-helper",
+	"name": "cpp-assist",
 	"icon": "images/icon.png",
-	"displayName": "C++ helper",
-	"description": "C++ shortcuts",
+	"displayName": "C++ Assistant",
+	"description": "Convenient operations on C++ projects",
 	"license": "See license in LICENSE.txt",
 	"version": "0.1.3",
 	"engines": {
@@ -33,15 +33,15 @@
 		"commands": [
 			{
 				"command": "extension.includeFile",
-				"title": "c++ helper: include file"
+				"title": "c++ assist: include file"
 			},
 			{
 				"command": "extension.includeGuard",
-				"title": "c++ helper: include guard"
+				"title": "c++ assist: include guard"
 			},
 			{
 				"command": "extension.createClass",
-				"title": "c++ helper: create class"
+				"title": "c++ assist: create class"
 			}
 		],
 		"menus": {
@@ -55,14 +55,14 @@
 		"keybindings": [
 			{
 				"command": "extension.includeFile",
-				"title": "c++ helper: include file",
+				"title": "c++ assist: include file",
 				"key": "ctrl+alt+i",
 				"mac": "cmd+alt+i",
 				"when": "editorTextFocus"
 			},
 			{
 				"command": "extension.includeGuard",
-				"title": "c++ helper: include guard",
+				"title": "c++ assist: include guard",
 				"key": "ctrl+alt+g",
 				"mac": "cmd+alt+g",
 				"when": "editorTextFocus"
@@ -70,29 +70,34 @@
 		],
 		"configuration": [
 			{
-				"title": "C++ Helper",
+				"title": "C++ assist",
 				"properties": {
-					"cpp_helper.removePathUntil": {
+					"cpp_assist.removePathUntil": {
 						"type": "string",
 						"default": "",
 						"description": "Ignore this path prefix from `include` path and include guard. If empty, it will ignore the path of current workspace"
 					},
-					"cpp_helper.includeFile.isRelative": {
+					"cpp_assist.includeFile.isRelative": {
 						"type": "boolean",
 						"default": true,
 						"description": "Is include path relative to current position or absolute from current workspace root."
 					},
-					"cpp_helper.includeGuard.prefix": {
+					"cpp_assist.includeGuard.random": {
+						"type": "boolean",
+						"default": false,
+						"description": "Add random string to file name in include guard."
+					},
+					"cpp_assist.includeGuard.prefix": {
 						"type": "string",
 						"default": "__",
 						"description": "Prefix for include guard."
 					},
-					"cpp_helper.includeGuard.suffix": {
+					"cpp_assist.includeGuard.suffix": {
 						"type": "string",
 						"default": "__",
 						"description": "Suffix for include guard."
 					},
-					"cpp_helper.includeGuard.commentStyle": {
+					"cpp_assist.includeGuard.commentStyle": {
 						"type": "string",
 						"enum": [
 							"block comment",
@@ -102,29 +107,29 @@
 						"default": "block comment",
 						"description": "Style of comment in include guard end."
 					},
-					"cpp_helper.includeGuard.spacesBeforeComment": {
+					"cpp_assist.includeGuard.spacesBeforeComment": {
 						"type": "number",
 						"minimum": 0,
 						"maximum": 40,
 						"default": 2,
 						"description": "How many spaces between the '#endif' and the comment."
 					},
-					"cpp_helper.createClass.cppExtension": {
+					"cpp_assist.createClass.cppExtension": {
 						"type": "string",
 						"default": "cpp",
 						"description": "Extension of C++ implementation file."
 					},
-					"cpp_helper.createClass.hppExtension": {
+					"cpp_assist.createClass.hppExtension": {
 						"type": "string",
 						"default": "h",
 						"description": "Extension of C++ header file."
 					},
-					"cpp_helper.createClass.cppTemplate": {
+					"cpp_assist.createClass.cppTemplate": {
 						"type": "string",
 						"default": "",
 						"description": "Template of C++ header file."
 					},
-					"cpp_helper.createClass.hppTemplate": {
+					"cpp_assist.createClass.hppTemplate": {
 						"type": "string",
 						"default": "",
 						"description": "Template of C++ header file."
@@ -135,22 +140,15 @@
 	},
 	"scripts": {
 		"test": "node ./test/runTest.js",
-		"create": "node node_modules/vsce/out/vsce package -o ./cpp-helper.vsix",
-		"make": "node node_modules/vsce/out/vsce package -o ./cpp-helper.vsix && code --install-extension ./cpp-helper.vsix && node node_modules/del-cli/cli.js ./cpp-helper.vsix"
+		"create": "node node_modules/vsce/out/vsce package -o ./cpp-assist.vsix",
+		"make": "node node_modules/vsce/out/vsce package -o ./cpp-assist.vsix && code --install-extension ./cpp-assist.vsix && node node_modules/del-cli/cli.js ./cpp-assist.vsix"
 	},
 	"devDependencies": {
-		"@types/glob": "^7.1.1",
-		"@types/mocha": "^5.2.6",
-		"@types/node": "^10.12.21",
-		"@types/vscode": "^1.36.0",
-		"eslint": "^5.13.0",
-		"glob": "^7.1.4",
-		"mocha": "^6.1.4",
-		"typescript": "^3.3.1",
-		"vscode-test": "^1.0.2"
+		"eslint": "^7.7.0",
+		"vscode-test": "^1.4.0"
 	},
 	"dependencies": {
-		"del-cli": "^2.0.0",
-		"vsce": "^1.66.0"
+		"del-cli": "^3.0.1",
+		"vsce": "^1.78.0"
 	}
 }

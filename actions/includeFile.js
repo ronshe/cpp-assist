@@ -12,7 +12,7 @@ async function includeFile() {
     if (text.length > 0) {
         editor.edit(editBuilder => {
         	const config = vscode.workspace.getConfiguration();
-            const isRelative = config.get('cpp_helper.includeFile.isRelative');
+            const isRelative = config.get('cpp_assist.includeFile.isRelative');
             const path = isRelative ? getRelativePath(editor.document, text) : removePrefix(text);
             editBuilder.replace(editor.selection, `#include "${path}"\n`);
         });

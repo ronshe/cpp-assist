@@ -1,9 +1,9 @@
-# cpp-helper
+# cpp-assist
 
 Tool to help you in your C++ development
 
 Tools:
-- [cpp-helper](#cpp-helper)
+- [cpp-assist](#cpp-assist)
   - [Insert an include guard to current H file](#insert-an-include-guard-to-current-h-file)
   - [Insert an `#include` instruction](#insert-an-include-instruction)
   - [Future planned features](#future-planned-features)
@@ -11,7 +11,7 @@ Tools:
 ---
 
 ## Insert an include guard to current H file
-ctrl-shift-p and run command: `c++ helper: include guard`
+ctrl-shift-p and run command: `c++ assist: include guard`
 You can use keyboard shortcut: alt-ctrl-g
 
 If the relative path file is `src/moon/dark/side.h`, than the include guard will be:
@@ -24,7 +24,7 @@ If the relative path file is `src/moon/dark/side.h`, than the include guard will
 The 'prefix' option and 'suffix' option (both  default: "\_\_") together with what to ignore before the path 'Remove Path Until' option. Empty makes the path from the workspace root.
 
 ## Insert an `#include` instruction
-ctrl-shift-p and run command: `c++ helper: include file`
+ctrl-shift-p and run command: `c++ assist: include file`
 You can use keyboard shortcut: alt-ctrl-i
 What to ignore before the 'Remove Path Until' option. Set as blank if you want it relative to the workspace root. If option 'Is relative' is set (default: yes), than the path will be relative to current file.
 
