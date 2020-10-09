@@ -1,25 +1,32 @@
 const vscode = require('vscode');
 
 function removePrefix(path) {
-	let newPath = path;
-	let prefix = vscode.workspace.getConfiguration().get('cpp_assist.removePathUntil');
-	if (prefix.length > 0) {
-		if (!prefix[prefix.length-1].match(/[\/\\]/))
-			prefix += '/';
+    let newPath = path;
+    let prefix = vscode.workspace.getConfiguration().get('cpp_assist.includeFile.removePathUntil');
+    if (prefix.length > 0) {
+        if (!prefix[prefix.length - 1].match(/[\/\\]/)) {
+            prefix += '/';
+        }
 
-		const deleteBefore = '\.*'+prefix.replace(/\\/g, '/');
-		newPath = path.replace(/.*:/g, '').replace(/\\/g, '/').replace(new RegExp(deleteBefore, 'g'), '');
-	}
-	if (path === newPath) {
-		prefix = vscode.workspace.rootPath + '/';
-		const deleteBefore = '\.*'+prefix.replace(/\\/g, '/');
-		newPath = path.replace(/.*:/g, '').replace(/\\/g, '/').replace(new RegExp(deleteBefore, 'g'), '');
-	}
-	return newPath;
+        const deleteBefore = '\.*' + prefix.replace(/\\/g, '/').replace(/\/\+/g, '\\+');
+        newPath = path
+            .replace(/.*:/g, '')
+            .replace(/\\/g, '/')
+            .replace(new RegExp(deleteBefore, 'g'), '');
+    }
+    if (path === newPath) {
+        prefix = vscode.workspace.rootPath + '/';
+        const deleteBefore = '\.*' + prefix.replace(/\\/g, '/').replace(/\/\+/g, '\\+');
+        newPath = path
+            .replace(/.*:/g, '')
+            .replace(/\\/g, '/')
+            .replace(new RegExp(deleteBefore, 'g'), '');
+    }
+    return newPath;
 }
 
 function getSelectedText() {
-	const editor = vscode.window.activeTextEditor;
+    const editor = vscode.window.activeTextEditor;
     if (editor.selection.isEmpty) {
         editor.selection = selectLine(editor.document, editor.selection);
     }
@@ -35,8 +42,8 @@ async function pasteToCurrentPosition(editor, selection = editor.selection) {
 }
 
 function selectLine(document, selection) {
-    const range = document.lineAt(selection.start.line).range;
-    if (range.start != range.end) {
+    const { range } = document.lineAt(selection.start.line);
+    if (range.start !== range.end) {
         selection = new vscode.Selection(range.start, range.end);
     }
     return selection;

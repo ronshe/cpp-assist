@@ -19,7 +19,7 @@ async function createClass(folderData) {
 
 async function createCppFile(wsPath, className) {
     const config = vscode.workspace.getConfiguration();
-    const HExt = config.get(`cpp_assist.createClass.hppExtension`);
+    const HExt = config.get('cpp_assist.createClass.hppExtension');
 
     let content = `#include "${className}.${HExt}"\n\n`;
 
@@ -27,23 +27,27 @@ async function createCppFile(wsPath, className) {
     if (template) {
         content += template.replace(/NEW_CLASS_NAME/g, className);
 
-        const cppExt = config.get(`cpp_assist.createClass.cppExtension`);
+        const cppExt = config.get('cpp_assist.createClass.cppExtension');
         await writeSourceFile(wsPath, className, cppExt, content);
     }
 }
 
 async function createHFile(wsPath, className) {
     const config = vscode.workspace.getConfiguration();
-    const HExt = config.get(`cpp_assist.createClass.hppExtension`);
+    const HExt = config.get('cpp_assist.createClass.hppExtension');
+    const useIncludeGuard = config.get('cpp_assist.createClass.useIncludeGuard');
 
-    const guardDefinition = getIncludeGuardDefine(`${className}.${HExt}`);
-    let content = getIncludeGuardStart(guardDefinition);
-
+    let guardDefinition = undefined, content = '';
+    if (useIncludeGuard) {
+        guardDefinition = getIncludeGuardDefine(`${className}.${HExt}`);
+        content = getIncludeGuardStart(guardDefinition);
+    }
     const template = await readTemplate('hppTemplate', 'default.h');
     if (template) {
         content += template.replace(/NEW_CLASS_NAME/g, className);
-        content += "\n" + getIncludeGuardEnd(guardDefinition);
-
+        if (useIncludeGuard) {
+            content += '\n' + getIncludeGuardEnd(guardDefinition);
+        }
         await writeSourceFile(wsPath, className, HExt, content);
     }
 }
@@ -54,7 +58,7 @@ async function readTemplate(templateOption, defaultFile) {
     if (!templateFile) {
         templateFile = getExtensionPath() + '/templates/' + defaultFile;
     }
-    const templateData = await fs.readFile(templateFile).catch(err => {
+    const templateData = await fs.readFile(templateFile).catch(() => {
         const msg = `Could not read template file: ${templateFile}`;
         errorMsg(msg);
         throw new Error(msg);
@@ -73,15 +77,14 @@ async function writeSourceFile(wsPath, className, ext, content) {
 
 async function getClassName() {
     return await vscode.window.showInputBox({
-			prompt: "Enter a new class name",
-			placeHolder: "ClassName",
-			validateInput: text => {
-				if (0 > text.search(/^[a-zA-Z]\w*$/)) {
-					return 'Illegal class name';
-				} else {
-					return undefined;
-				}
-			}
-		});
+        prompt: 'Enter a new class name',
+        placeHolder: 'ClassName',
+        validateInput: text => {
+            if (text.search(/^[a-zA-Z]\w*$/) < 0) {
+                return 'Illegal class name';
+            }
+            return undefined;
+        }
+    });
 }
 module.exports = createClass;

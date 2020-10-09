@@ -72,10 +72,10 @@
 			{
 				"title": "C++ assist",
 				"properties": {
-					"cpp_assist.removePathUntil": {
+					"cpp_assist.includeFile.removePathUntil": {
 						"type": "string",
 						"default": "",
-						"description": "Ignore this path prefix from `include` path and include guard. If empty, it will ignore the path of current workspace"
+						"description": "Ignore this path prefix from `include` path. If empty, it will ignore the path of current workspace"
 					},
 					"cpp_assist.includeFile.isRelative": {
 						"type": "boolean",
@@ -84,8 +84,8 @@
 					},
 					"cpp_assist.includeGuard.random": {
 						"type": "boolean",
-						"default": false,
-						"description": "Add random string to file name in include guard."
+						"default": true,
+						"description": "Should we add a random string to file name string in the include guard?"
 					},
 					"cpp_assist.includeGuard.prefix": {
 						"type": "string",
@@ -104,7 +104,7 @@
 							"line comment",
 							"None"
 						],
-						"default": "block comment",
+						"default": "line comment",
 						"description": "Style of comment in include guard end."
 					},
 					"cpp_assist.includeGuard.spacesBeforeComment": {
@@ -117,22 +117,27 @@
 					"cpp_assist.createClass.cppExtension": {
 						"type": "string",
 						"default": "cpp",
-						"description": "Extension of C++ implementation file."
+						"description": "Extension of C++ implementation file (cpp/c++/cc)."
 					},
 					"cpp_assist.createClass.hppExtension": {
 						"type": "string",
 						"default": "h",
-						"description": "Extension of C++ header file."
+						"description": "Extension of C++ header file (h/hpp/h++/hh)."
 					},
 					"cpp_assist.createClass.cppTemplate": {
 						"type": "string",
 						"default": "",
-						"description": "Template of C++ header file."
+						"description": "Path of template of C++ implementation file."
 					},
 					"cpp_assist.createClass.hppTemplate": {
 						"type": "string",
 						"default": "",
-						"description": "Template of C++ header file."
+						"description": "Path of template of C++ header file."
+					},
+					"cpp_assist.createClass.useIncludeGuard": {
+						"type": "boolean",
+						"default": true,
+						"description": "Add include guard to the header file when creating a class."
 					}
 				}
 			}
@@ -141,7 +146,7 @@
 	"scripts": {
 		"test": "node ./test/runTest.js",
 		"create": "node node_modules/vsce/out/vsce package -o ./cpp-assist.vsix",
-		"make": "node node_modules/vsce/out/vsce package -o ./cpp-assist.vsix && code --install-extension ./cpp-assist.vsix && node node_modules/del-cli/cli.js ./cpp-assist.vsix"
+		"install": "npm run create && code --install-extension ./cpp-assist.vsix && node node_modules/del-cli/cli.js ./cpp-assist.vsix"
 	},
 	"devDependencies": {
 		"eslint": "^7.7.0",
